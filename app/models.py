@@ -43,3 +43,9 @@ class Race_stat(db.Model):
     boat_id = db.Column(db.Integer, ForeignKey("boat.id"))
     time = db.Column(db.Time)
     srs_time = db.Column(db.Time)
+
+class User_token(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, ForeignKey("user.id"))
+    token = db.Column(db.String(255), unique=True)

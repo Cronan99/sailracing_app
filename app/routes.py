@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash
 from app.models import *
 from flask import current_app as app
 from time import sleep
+import uuid
 
 
 @app.route("/")
@@ -11,11 +12,23 @@ def index():
         boat_types = Boat_type.query.all()
         
         return render_template("index.html", boat_types=boat_types)
-    else:
-        return render_template("login.html")
     
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
+
+    if request.method=="POST":
+
+        username = request.form.get("Username")
+        password = request.form.get("Password")
+
+        password_hash= generate_password_hash(password)
+
+        authentication = User.query.filter_by(username=username, password_hash=password_hash).first()
+
+        if authentication:
+            print("hejhej")
+
+
     return render_template("login.html")
 
 @app.route("/register", methods=["GET", "POST"])
