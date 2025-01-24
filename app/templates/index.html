@@ -4,12 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SailRacer</title>
+    <style>
+        .scrollbar {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #000000;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        .item {
+            padding: 8px;
+            border-bottom: 1px solid #1900ff;
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+    </style>
 </head>
 <body>
+
     <h1>Sail Racer</h1>
     <button type="submit">Logout</button>
-    <h2>Boats</h2>
+
+
+    <h2>Boat Types</h2>
+        <div class="scrollbar">
+            {% for boat in boat_types %}
+                <div class="item">{{boat.name}}</div>
+            {% else %}
+                <div class="item">No boattypes found</div>
+            {% endfor %}
+        </div>
+
     <h2>Races</h2>
+        <div class="scrollbar">
+            {% for race in race_list %}
+                <div class="item">{{race.name}}</div>
+            {% else %}
+                <div class="item">No races found</div>
+            {% endfor %}
+        </div>
+
     
 </body>
 </html>
