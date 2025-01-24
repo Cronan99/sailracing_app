@@ -27,7 +27,8 @@
 <body>
 
     <h1>Sail Racer</h1>
-    <button type="submit">Logout</button>
+    <a href="{{url_for("login")}}">Login</a><br>
+    <a href="{{url_for("register")}}">Register</a><br>
 
 
     <h2>Boat Types</h2>
@@ -48,6 +49,15 @@
             {% endfor %}
         </div>
 
-    
+    <h2>Boat List</h2>
+        <div class="scrollbar">
+            {% for boat in boat_list %}
+                <div class="item">{{boat.name}}</div>
+            {% else %}
+                <div class="item">No boats found</div>
+            {% endfor %}
+        </div>
+
+        
 </body>
 </html>

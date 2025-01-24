@@ -26,7 +26,11 @@ def get_srs():
     return boat_list
 
 def create_boat_objects():
+    """ Add all boats/data that has been scraped to the database """
+
     boats = get_srs()
+
+    # the list with boats contain a continous array with name, srs, srs, srs, srs followed by the next boat
     for i in range(0, len(boats), 5):
         name = boats[i]         # Boat name
         srs = boats[i+1]        # SRS
@@ -49,5 +53,3 @@ def create_boat_objects():
 
     session.commit()
     session.close()
-
-create_boat_objects()
