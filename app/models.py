@@ -18,9 +18,9 @@ class Boat_type(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     srs = db.Column(db.Float, nullable=False)
-    srs_ns = db.Column(db.Float, nullable=False)
-    srs_sh = db.Column(db.Float, nullable=False)
-    srs_sh_ns = db.Column(db.Float, nullable=False)
+    srs_ns = db.Column(db.Float, nullable=False) #no spin   
+    srs_sh = db.Column(db.Float, nullable=False) #shorthanded
+    srs_sh_ns = db.Column(db.Float, nullable=False) #shorthanden no spin
 
 class Race(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,6 +28,7 @@ class Race(db.Model):
     date = db.Column(db.Date, nullable=False)
 
 class Race_stat(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     race_id = db.Column(db.Integer, ForeignKey("race.id"))
     boat_id = db.Column(db.Integer, ForeignKey("boat.id"))
     time = db.Column(db.Time)
