@@ -6,7 +6,7 @@ from srs_scrape import get_srs
 
 
 def mock_response():
-    #Simulating a mock instead of calling the url while testing
+    # Simulating a mock instead of calling the url while testing
 
     html = """
     <html>
