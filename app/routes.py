@@ -6,9 +6,9 @@ from flask import current_app as app
 
 @app.route("/")
 def index():
-    username = is_logged_in()
+    user = is_logged_in()
     boat_types = Boat_type.query.all()
-    return render_template("index.html", boat_types=boat_types, username=username)
+    return render_template("index.html", boat_types=boat_types, user=user)
     
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -22,7 +22,6 @@ def login():
             if check_password_hash(user.password_hash, password):
                 
                 session["user_id"] = user.id
-                session["username"] = user.username
 
                 return redirect(url_for("index"))
                 
@@ -67,13 +66,22 @@ def register():
 def logout():
     # Remove the user's id from the session to log them out
     session.pop("user_id", None)
-    session.pop("username", None)
+
     return redirect(url_for("index"))
 
+@app.route("/race")
+def create_race():
+    return render_template("race.html")
+
+@app.route("/create_boat")
+def create_boat():
+    return render_template("create_boat.html")
+
 def is_logged_in():
+        """ Checks if there is a user logged in to the session """
         if "user_id" in session:
-            username = session["username"]
-            return username
+            user_id = session["user_id"]
+            user = User.query.filter_by(id=user_id).first()
+            return user
         else:
             False
-        
