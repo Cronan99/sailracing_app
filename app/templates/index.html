@@ -27,8 +27,13 @@
 <body>
 
     <h1>Sail Racer</h1>
-    <a href="{{url_for("login")}}">Login</a><br>
-    <a href="{{url_for("register")}}">Register</a><br>
+    {% if session.username %}
+        <h2>Welcome, {{ session.username }}!</h2>
+        <a href="{{ url_for("logout") }}">Logout</a><br>
+    {% else %}
+        <a href="{{ url_for("login") }}">Login</a><br>
+        <a href="{{ url_for("register") }}">Register</a><br>
+    {% endif %}
 
 
     <h2>Boat Types</h2>
