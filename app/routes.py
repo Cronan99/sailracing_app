@@ -2,13 +2,16 @@ from flask import render_template, request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.models import *
 from flask import current_app as app
+from app.utils import user_auth, save_boat
 
 
 @app.route("/")
 def index():
-    user = is_logged_in()
+    user = user_auth()
     boat_types = Boat_type.query.all()
-    return render_template("index.html", boat_types=boat_types, user=user)
+    boat_list = Boat.query.all()
+    users = User.query.all()
+    return render_template("index.html", boat_types=boat_types, boat_list=boat_list, users=users, user=user)
     
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -71,17 +74,20 @@ def logout():
 
 @app.route("/race")
 def create_race():
-    return render_template("race.html")
+    user = user_auth()
+    if user.admin:
+        return render_template("race.html")
+    else:
+        redirect(url_for("index"))
 
-@app.route("/create_boat")
+@app.route("/create_boat", methods=["GET", "POST"])
 def create_boat():
-    return render_template("create_boat.html")
-
-def is_logged_in():
-        """ Checks if there is a user logged in to the session """
-        if "user_id" in session:
-            user_id = session["user_id"]
-            user = User.query.filter_by(id=user_id).first()
-            return user
-        else:
-            False
+    boat_types = Boat_type.query.all()
+    if request.method == "POST":
+        user_id = session["user_id"]
+        sail_nr = request.form.get("sailnumber")
+        boat_name = request.form.get("boat name")
+        boat_type = request.form.get("boat")
+        save_boat(user_id, sail_nr, boat_name, boat_type)
+        return redirect(url_for("index"))
+    return render_template("create_boat.html", boat_types=boat_types)
