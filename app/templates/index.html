@@ -5,23 +5,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SailRacer</title>
     <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        /* Form container */
+        .container {
+            width: 90%;
+            max-width: 900px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 15px 0;
+            width: 100%;
+        }
+
         .scrollbar {
             max-height: 300px;
             overflow-y: auto;
-            border: 1px solid #000000;
+            border-radius: 8px;
+            border: 1px solid #007bff;
             padding: 10px;
-            margin-top: 20px;
+            background-color: #f9f9f9;
         }
 
         .item {
-            padding: 8px;
-            border-bottom: 1px solid #1900ff;
+            padding: 12px;
+            border-bottom: 1px solid #007bff;
+            font-size: 1.1rem;
         }
 
         .item:last-child {
             border-bottom: none;
         }
 
+        .item:hover {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Navigation links */
+        .nav-links {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-size: 1rem;
+            padding: 10px 15px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Links */
+        a {
+            color: #007bff;
+            text-decoration: none;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Flash messages */
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        ul li {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            border: 1px solid #ffcdd2;
+        }
     </style>
 </head>
 <body>
@@ -62,12 +161,15 @@
     <h2>Boat List</h2>
         <div class="scrollbar">
             {% for boat in boat_list %}
-                <div class="item">{{boat.name}}</div>
+                {% for user in users %}
+                    {% if user.id == boat.user_id %}
+                        <div class="item">Boat: {{ boat.name }} <br> Captain: {{user.username}}</div>
+                    {% endif %}
+                {% endfor %}
             {% else %}
                 <div class="item">No boats found</div>
             {% endfor %}
         </div>
 
-        
 </body>
 </html>

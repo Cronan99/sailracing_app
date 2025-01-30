@@ -15,6 +15,7 @@ class Boat(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    sail_nr = db.Column(db.Integer, nullable=False)
     name = db.Column(db.String(255), nullable=False)
     type_id = db.Column(db.Integer, db.ForeignKey("boat_type.id"))
 
