@@ -1,7 +1,6 @@
 import pytest
 from bs4 import BeautifulSoup
 import requests
-
 from srs_scrape import get_srs
 
 
@@ -18,6 +17,7 @@ def mock_response():
         </body>
     </html>
     """
+    
     class MockResponse:
         @property
         def content(self):
@@ -33,6 +33,6 @@ def test_get_srs(mock_request_get):
     #Calling get_srs() and compare with excpected_lst to see if they are the same
     boat_list = get_srs()
 
-    #excpected_list = ['1006', '0.949', '0.926', '0.942', '0.922']
-    excpected_list = [str(),str(),str(),str(),str()]
+    excpected_list = ['1006', '0.949', '0.926', '0.942', '0.922']
+    
     assert boat_list[:5] == excpected_list
