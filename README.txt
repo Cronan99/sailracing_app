@@ -9,7 +9,7 @@ to set the users admin privileges, do the following:
 type in terminal
 
 flask shell
-user = User.query.filter_by(username="{your_admin_username}").first()
+user = User.query.filter_by(username="your_admin_username").first()
 user.admin = True
 db.session.commit()
 exit()

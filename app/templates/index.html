@@ -163,7 +163,11 @@
             {% for boat in boat_list %}
                 {% for user in users %}
                     {% if user.id == boat.user_id %}
-                        <div class="item">Boat: {{ boat.name }} <br> Captain: {{user.username}}</div>
+                        {% for boat_type in boat_types %}
+                            {% if boat.type_id == boat_type.id %}
+                                <div class="item">Model: {{boat_type.name}} <br>Boat: {{ boat.name }} <br> Captain: {{user.username}}</div>
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
                 {% endfor %}
             {% else %}
