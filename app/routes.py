@@ -52,9 +52,22 @@ def logout():
 def create_race():
     user = user_auth()
     if user.admin:
+        if request.method == "POST":
+            race_name = request.form.get("raceName")
+            race_date = request.form.get("raceDate")
+            boats = request.form.getlist("boats")
+            srs_list = []
+            for boat in boats:
+                srs = request.form.get(f"boat_{boat}_handicap")
+                srs_list.append(srs)
+            print(race_name, race_date, boats, srs_list)
+
+
         boat_types = Boat_type.query.all()
         boat_list = Boat.query.all()
+        boat_list.sort(key=lambda boat: boat.name.lower())
         users = User.query.all()
+
         return render_template("race.html", boat_types=boat_types, boat_list=boat_list, users=users)
     else:
         redirect(url_for("index"))
