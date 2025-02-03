@@ -4,168 +4,142 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SailRacer</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* General styles */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-        }
-
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        h2 {
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        /* Form container */
-        .container {
-            width: 90%;
-            max-width: 900px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .section {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin: 15px 0;
-            width: 100%;
-        }
-
         .scrollbar {
             max-height: 300px;
             overflow-y: auto;
+            margin-top: 10px;
+            padding-right: 10px;
+            border: 1px solid #ccc;
             border-radius: 8px;
-            border: 1px solid #007bff;
-            padding: 10px;
-            background-color: #f9f9f9;
         }
 
         .item {
-            padding: 12px;
-            border-bottom: 1px solid #007bff;
-            font-size: 1.1rem;
-        }
-
-        .item:last-child {
-            border-bottom: none;
+            background-color: #f8f9fa;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .item:hover {
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
+            background-color: #e9ecef;
         }
 
-        /* Navigation links */
-        .nav-links {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
         }
 
-        .nav-links a {
-            font-size: 1rem;
-            padding: 10px 15px;
-            background-color: #f0f0f0;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            background-color: #007bff;
-            color: white;
-        }
-
-        /* Links */
-        a {
+        h1 {
             color: #007bff;
-            text-decoration: none;
-            margin-top: 10px;
-            display: inline-block;
+            text-align: center;
+            margin-top: 30px;
         }
 
-        a:hover {
+        .navbar {
+            margin-bottom: 20px;
+        }
+
+        .nav-link {
+            color: #007bff !important;
+        }
+
+        .nav-link:hover {
+            color: #0056b3 !important;
+        }
+
+        .welcome-message {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .action-buttons a {
+            margin: 0 15px;
+        }
+
+        .section-title {
+            margin-top: 40px;
+            font-size: 1.5em;
             text-decoration: underline;
         }
 
-        /* Flash messages */
-        ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0 0 20px 0;
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.9em;
+            color: #6c757d;
         }
 
-        ul li {
-            background-color: #ffebee;
-            color: #c62828;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            border: 1px solid #ffcdd2;
-        }
     </style>
 </head>
 <body>
 
-    <h1>Sail Racer</h1>
-    {% if user.username %}
-        <h2>Welcome, {{ user.username }}!</h2>
-        <a href="{{ url_for("logout") }}">Logout</a><br>
-        {% if user.admin %}
-        <a href="{{ url_for("create_race") }}">Create Race</a>
-        {% else %}
-        <a href="{{ url_for("create_boat") }}">Create Boat</a>
-        {% endif %}
-    {% else %}
-        <a href="{{ url_for("login") }}">Login</a><br>
-        <a href="{{ url_for("register") }}">Register</a><br>
-    {% endif %}
+    <div class="container">
+        <!-- Header Section -->
+        <h1>Sail Racer</h1>
+        
+        <!-- Login/Logout and Action Links -->
+        <div class="welcome-message">
+            {% if user.username %}
+                <h2>Welcome, {{ user.username }}!</h2>
+                <div class="action-buttons">
+                    <a href="{{ url_for("logout") }}" class="btn btn-danger">Logout</a>
+                    {% if user.admin %}
+                        <a href="{{ url_for("create_race") }}" class="btn btn-primary">Create Race</a>
+                    {% else %}
+                        <a href="{{ url_for("create_boat") }}" class="btn btn-primary">Create Boat</a>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="action-buttons">
+                    <a href="{{ url_for("login") }}" class="btn btn-success">Login</a>
+                    <a href="{{ url_for("register") }}" class="btn btn-success">Register</a>
+                </div>
+            {% endif %}
+        </div>
 
-
-    <h2>Boat Types</h2>
+        <!-- Boat Types Section -->
+        <div class="section-title">Boat Types</div>
         <div class="scrollbar">
             {% for boat in boat_types %}
-                <div class="item">{{boat.name}}</div>
+                <div class="item">{{ boat.name }}</div>
             {% else %}
-                <div class="item">No boattypes found</div>
+                <div class="item">No boat types found</div>
             {% endfor %}
         </div>
 
-    <h2>Races</h2>
+        <!-- Races Section -->
+        <div class="section-title">Races</div>
         <div class="scrollbar">
             {% for race in race_list %}
-                <div class="item">{{race.name}}</div>
+                <div class="item">{{ race.name }}</div>
             {% else %}
                 <div class="item">No races found</div>
             {% endfor %}
         </div>
 
-    <h2>Boat List</h2>
+        <!-- Boat List Section -->
+        <div class="section-title">Boat List</div>
         <div class="scrollbar">
             {% for boat in boat_list %}
                 {% for user in users %}
                     {% if user.id == boat.user_id %}
                         {% for boat_type in boat_types %}
                             {% if boat.type_id == boat_type.id %}
-                                <div class="item">Model: {{boat_type.name}} <br>Boat: {{ boat.name }} <br> Captain: {{user.username}}</div>
+                                <div class="item">
+                                    <strong>Model:</strong> {{ boat_type.name }} <br>
+                                    <strong>Boat:</strong> {{ boat.name }} <br>
+                                    <strong>Captain:</strong> {{ user.username }}
+                                </div>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
@@ -174,6 +148,15 @@
                 <div class="item">No boats found</div>
             {% endfor %}
         </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 SailRacer. All rights reserved.</p>
+    </div>
+
+    <!-- Bootstrap JS (optional, for interactive components) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

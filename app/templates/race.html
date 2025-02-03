@@ -4,115 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Race</title>
-    <style>
-        /* General Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }
-
-        form {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        label {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 5px;
-            display: block;
-            color: #34495e;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        input[type="text"]:focus, select:focus {
-            border-color: #3498db;
-            outline: none;
-        }
-
-        button {
-            padding: 12px 20px;
-            background-color: #3498db;
-            color: #fff;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        button:hover {
-            background-color: #2980b9;
-        }
-
-        /* Add some responsive design */
-        @media (max-width: 600px) {
-            form {
-                padding: 15px;
-            }
-
-            button {
-                font-size: 14px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css">
 </head>
 <body>
+    <div class="container mt-5">
+        <h1>Create Race</h1>
+        <form action="{{ url_for('create_race') }}" method="POST">
+            <div class="mb-3">
+                <label for="raceName" class="form-label">Race Name</label>
+                <input type="text" class="form-control" id="raceName" name="raceName" required>
+            </div>
 
-    <h1>Create Race</h1>
+            <div class="mb-3">
+                <label for="raceDate" class="form-label">Race Date</label>
+                <input type="date" class="form-control" id="raceDate" name="raceDate" required>
+            </div>
 
-    <form method="post">
-        <label for="add boat">Add Boat</label><br>
-        <label for="select boat">Select Boat:</label>
-        <select name="boat" id="boat">
-            {% for boat in boat_list %}
-                {% for user in users %}
-                    {% if boat.user_id == user.id %}
-                        <option value="{{ boat.id }}">{{ boat.name }} <> {{ user.username }}</option>
-                    {% endif %}
+            <h4>Boats to Add to Race</h4>
+            <div class="list-group">
+                {% for boat in boat_list %}
+                <div class="list-group-item">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h5>{{ boat.name }}</h5>
+                            {% for user in users %}
+                                {% if user.id == boat.user_id %}
+                            <p>Owner: {{ user.username }}</p>
+                                {% endif %}
+                            {% endfor %} 
+                        </div>
+
+                        <div>
+                            <label for="boat{{ boat.id }}_handicap" class="form-label">Select Handicap</label>
+                            <select id="boat{{ boat.id }}_handicap" name="boat_{{ boat.id }}_handicap" class="form-select">
+                                {% for boat_type in boat_types %}
+                                    {% if boat.type_id == boat_type.id %}
+                                        <option value="{{ boat_type.srs }}" {% if boat_type.srs == boat.srs %}selected{% endif %}>
+                                            {{ boat_type.name }} (SRS: {{ boat_type.srs }})
+                                        </option>
+                                        <option value="{{ boat_type.srs_ns }}" {% if boat_type.srs_ns == boat.srs_ns %}selected{% endif %}>
+                                            {{ boat_type.name }} (No Downwind Sail: SRS: {{ boat_type.srs_ns }})
+                                        </option>
+                                        <option value="{{ boat_type.srs_sh }}" {% if boat_type.srs_sh == boat.srs_sh %}selected{% endif %}>
+                                            {{ boat_type.name }} (Shorthanded: SRS: {{ boat_type.srs_sh }})
+                                        </option>
+                                        <option value="{{ boat_type.srs_sh_ns }}" {% if boat_type.srs_sh_ns == boat.srs_sh_ns %}selected{% endif %}>
+                                            {{ boat_type.name }} (Shorthanded No Downwind Sail: SRS: {{ boat_type.srs_sh_ns }})
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="boat{{ boat.id }}" name="boats" value="{{ boat.id }}">
+                            <label for="boat{{ boat.id }}">Add to Race</label>
+                        </div>
+                    </div>
+                </div>
                 {% endfor %}
-            {% endfor %}
-        </select>
+            </div>
 
-        <select name="srs" id="srs">
-            <option value="1">SRS</option>
-            <option value="2">SRS - No Downwindsail</option>
-            <option value="3">SRS - Shorthanded</option>
-            <option value="4">SRS - Shorthanded, No Downwindsail</option>
-        </select>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Create Race</button>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
 
-        <label for="handicap">Handicap</label>
-        <button type="submit">Add to Race</button>
-    </form>
-
-    <form method="post">
-        
-    </form>
-</body> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
