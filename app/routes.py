@@ -55,14 +55,19 @@ def create_race():
         if request.method == "POST":
             race_name = request.form.get("raceName")
             race_date = request.form.get("raceDate")
-            boats = request.form.getlist("boats")
+            boat_id = request.form.getlist("boats")
             srs_list = []
-            for boat in boats:
-                srs = request.form.get(f"boat_{boat}_handicap")
-                srs_list.append(srs)
-            print(race_name, race_date, boats, srs_list)
+            for id in boat_id:
+                srs = request.form.get(f"boat_{id}_handicap")
+                srs_list.append([id, srs])
 
+            session["race_name"] = race_name
+            session["race_date"] = race_date
+            session["srs_list"] = srs_list
+            session["boat_id"] = boat_id
 
+            return redirect(url_for("race_time"))
+            
         boat_types = Boat_type.query.all()
         boat_list = Boat.query.all()
         boat_list.sort(key=lambda boat: boat.name.lower())
@@ -70,7 +75,29 @@ def create_race():
 
         return render_template("race.html", boat_types=boat_types, boat_list=boat_list, users=users)
     else:
-        redirect(url_for("index"))
+        return redirect(url_for("index"))
+
+@app.route("/racetimes", methods=["GET", "POST"])
+def race_time():
+
+    race_name = session.get("race_name")
+    race_date = session.get("race_date")
+    srs_list = session.get("srs_list")
+    boat_id = session.get("boat_id")
+
+    if request.method == "POST":
+        times = []
+        for id in boat_id:
+            hours = request.form.get(f"hours_{id}")
+            minutes = request.form.get(f"minutes_{id}")
+            seconds = request.form.get(f"seconds_{id}")
+            times.append([id, hours, minutes, seconds])
+        print(times)
+
+    # Retrieve the boat objects based on IDs
+    boats = Boat.query.filter(Boat.id.in_(boat_id)).all()
+
+    return render_template("race_times.html", race_name=race_name, race_date=race_date, srs_list=srs_list, boats=boats)
 
 
 @app.route("/create_boat", methods=["GET", "POST"])

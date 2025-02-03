@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Race Stats</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>{{ race_name }}</h1>
+        <h2>{{ race_date }}</h2>
+
+        <form method="POST">
+            {% for boat in boats %}
+                <div class="mb-4">
+                    <h5>{{ boat.name }}</h5>
+                    {% for srs in srs_list %}
+                        {% if srs[0]|int == boat.id %}
+                            <p><strong>SRS:</strong> {{ srs[1] }}</p>
+
+                            <div class="mb-3">
+                                <label for="time{{ boat.id }}" class="form-label">Measured Time [Hours:Minutes:Seconds]:</label>
+                                <div class="d-flex">
+                                    <input type="number" class="form-control me-2" id="hours{{ boat.id }}" name="hours_{{ boat.id }}" 
+                                           min="0" max="99" step="1" placeholder="00">
+                                    <span>:</span>
+                                    <input type="number" class="form-control me-2" id="minutes{{ boat.id }}" name="minutes_{{ boat.id }}"
+                                           min="0" max="59" step="1" placeholder="00">
+                                    <span>:</span>
+                                    <input type="number" class="form-control" id="seconds{{ boat.id }}" name="seconds_{{ boat.id }}"
+                                           min="0" max="59" step="1" required placeholder="00">
+                                </div>
+                                
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-primary">Submit times</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
