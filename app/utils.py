@@ -1,7 +1,8 @@
 from flask import session, redirect, url_for, flash
-from app.models import User, Boat
+from app.models import User, Boat, Race, Race_stat
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
+from datetime import time, datetime
 
 
 def user_auth():
@@ -66,8 +67,8 @@ def register_user(username, password):
     # After the user is created its redirected to the login page
     flash("Registration is successful! Please login.")
     return redirect(url_for("login"))
-    
-        
+
+
 def save_boat(user_id, sail_nr, name, type_id):
     """ Adds the boat to the database """
 
@@ -75,3 +76,32 @@ def save_boat(user_id, sail_nr, name, type_id):
     db.session.add(boat)
     db.session.commit()
     print("Boat saved successfully!")
+
+
+def save_race(race_name, race_date, srs_list, times):
+
+    
+    race_date =  datetime.strptime(race_date, "%Y-%m-%d").date()
+    race = Race(name=race_name, date=race_date)
+    db.session.add(race)
+    db.session.commit()
+
+    for race_time in times:
+        for srs in srs_list:
+            if race_time[0] == srs[0]:
+
+                race_hours = int(race_time[1]) if race_time[1] else 0
+                race_minutes = int(race_time[2]) if race_time[2] else 0
+                race_seconds = int(race_time[3]) if race_time[3] else 0
+                
+                total_time_seconds = race_hours * 3600 + race_minutes * 60 + race_seconds
+                srs_time_seconds = int(total_time_seconds) * float(srs[1])
+                srs_hours = int(srs_time_seconds // 3600)
+                srs_minutes = int((srs_time_seconds % 3600) // 60)
+                srs_seconds = int(srs_time_seconds % 60)
+                real_time = time(race_hours, race_minutes, race_seconds)
+                srs_time = time(srs_hours, srs_minutes, srs_seconds)
+
+                race_stat = Race_stat(race_id=race.id, boat_id=race_time[0], time=real_time, srs_time=srs_time)
+                db.session.add(race_stat)
+                db.session.commit()

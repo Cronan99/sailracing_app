@@ -121,7 +121,7 @@
         <div class="section-title">Races</div>
         <div class="scrollbar">
             {% for race in race_list %}
-                <div class="item">{{ race.name }}</div>
+                <div class="item">{{ race.name }}</div><button action="{{ url_for("create_boat") }}">Show Leaderboard</button>
             {% else %}
                 <div class="item">No races found</div>
             {% endfor %}
