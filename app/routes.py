@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for, session
 from app.models import *
 from flask import current_app as app
-from app.utils import user_auth, save_boat, login_check, register_user
+from app.utils import user_auth, save_boat, login_check, register_user, save_race
 
 
 @app.route("/")
@@ -10,7 +10,8 @@ def index():
     boat_types = Boat_type.query.all()
     boat_list = Boat.query.all()
     users = User.query.all()
-    return render_template("index.html", boat_types=boat_types, boat_list=boat_list, users=users, user=user)
+    race_list = Race.query.all()
+    return render_template("index.html", boat_types=boat_types, boat_list=boat_list, users=users, user=user, race_list=race_list)
     
     
 @app.route("/login", methods=["GET", "POST"])
@@ -92,7 +93,10 @@ def race_time():
             minutes = request.form.get(f"minutes_{id}")
             seconds = request.form.get(f"seconds_{id}")
             times.append([id, hours, minutes, seconds])
-        print(times)
+        
+        save_race(race_name, race_date, srs_list, times)
+        return redirect(url_for("index"))
+        
 
     # Retrieve the boat objects based on IDs
     boats = Boat.query.filter(Boat.id.in_(boat_id)).all()
@@ -120,3 +124,7 @@ def create_boat():
         return render_template("create_boat.html", boat_types=boat_types)
     else:
         return redirect(url_for("index"))
+    
+app.route("/leaderboard", methods=["GET", "POST"])
+def leaderboard():
+    pass
