@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for, session
 from app.models import *
 from flask import current_app as app
-from app.utils import user_auth, save_boat, login_check, register_user, save_race
+from app.utils import *
 
 
 @app.route("/")
@@ -125,6 +125,30 @@ def create_boat():
     else:
         return redirect(url_for("index"))
     
-app.route("/leaderboard", methods=["GET", "POST"])
-def leaderboard():
-    pass
+@app.route("/leaderboard/<int:race_id>", methods=["GET", "POST"])
+def leaderboard(race_id):
+    race_stats = Race_stat.query.filter_by(race_id=race_id).all()
+    race = Race.query.filter_by(id=race_id).first()
+    boat_types = Boat_type.query.all()
+    boat_list = []
+    user_list = []
+    result_list  = []
+    for stat in race_stats:
+        boat = Boat.query.filter_by(id=stat.boat_id).all()
+        boat_list.append(boat)
+    for boats in boat_list:
+        for boat in boats:
+            user = User.query.filter_by(id=boat.user_id).all()
+            user_list.append(user)
+    for stat in race_stats:
+        result_list.append([stat.boat_id, stat.srs_time, stat.time])
+
+    result_list.sort(key=lambda x: x[1])
+
+    return render_template("leaderboard.html",
+                            result_list = result_list,
+                            boat_list=boat_list,
+                            user_list=user_list,
+                            race=race,
+                            boat_types=boat_types
+                            )
