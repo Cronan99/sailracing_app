@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background-color: #0044cc;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        .leaderboard-container {
+            width: 80%;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .leaderboard-item {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+        }
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+        .leaderboard-item label {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+        .position {
+            font-weight: bold;
+            font-size: 20px;
+            color: #0044cc;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0044cc;
+            color: white;
+            font-size: 16px;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        .back-btn:hover {
+            background-color: #0033aa;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>{{ race.name }} - {{ race.date }}</h1>
+    </header>
+
+    <div class="leaderboard-container">
+        {% set ns = namespace(position=1) %}
+        {% for result in result_list %}
+            {% for boats in boat_list %}
+                {% for boat in boats %}
+                    {% for users in user_list %}
+                        {% for user in users %}
+                            {% for type in boat_types %}
+                                {% if result[0] == boat.id %}
+                                    {% if boat.user_id == user.id %}
+                                        {% if boat.type_id == type.id %}
+                                            <div class="leaderboard-item">
+                                                <label class="position">{{ ns.position }}. {{ boat.name }}</label>
+                                                <label>Type: {{ type.name }}</label>
+                                                <label>Time (SRS): {{ result[1] }}</label>
+                                                <label>Time (Real): {{ result[2] }}</label>
+                                                <label>Owner: {{ user.username }}</label>
+                                            </div>
+                                            {% set ns.position = ns.position + 1 %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+
+        <a href="{{ url_for('index') }}" class="back-btn">Return to Homepage</a>
+    </div>
+</body>
+</html>
