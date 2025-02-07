@@ -30,7 +30,7 @@ def mock_request_get(mocker):
     mocker.patch("requests.get", side_effect=mock_response)
 
 def test_get_srs(mock_request_get):
-    #Calling get_srs() and compare with excpected_lst to see if they are the same
+    # Calling get_srs() and compare with excpected_lst to see if they are the same
     boat_list = get_srs()
 
     excpected_list = ['1006', '0.949', '0.926', '0.942', '0.922']
