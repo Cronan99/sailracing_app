@@ -17,6 +17,7 @@
                     <h5>{{ boat.name }}</h5>
                     {% for srs in srs_list %}
                         {% if srs[0]|int == boat.id %}
+                            <p><strong>Sailnumber:</strong> {{ boat.sail_nr }}</p>
                             <p><strong>SRS:</strong> {{ srs[1] }}</p>
 
                             <div class="mb-3">

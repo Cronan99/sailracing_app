@@ -37,6 +37,21 @@
         .alert {
             margin-top: 20px;
         }
+        .alert-success {
+            color: white;
+            background-color: green;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .alert-danger {
+            color: white;
+            background-color: red;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
     </style>
 </head>
 <body>
@@ -44,16 +59,16 @@
     <div class="container">
         <h1>Login</h1>
 
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div class="alert alert-danger">
-                    <ul>
-                        {% for message in messages %}
-                            <li>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div>
+                {% for category, message in messages %}
+                    <div class="alert {% if category == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
         {% endwith %}
         
         <form method="post">

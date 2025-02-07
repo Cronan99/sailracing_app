@@ -182,7 +182,7 @@
         <!-- Races Section -->
         <div class="section-title">Races</div>
         <div class="scrollbar">
-            {% for race in race_list %}
+            {% for race in race_list|reverse %}
             <div class="item">
                 <div><strong>{{ race.name }}:</strong> {{ race.date }}</div>
                 <a href="{{ url_for('leaderboard', race_id=race.id) }}" class="btn btn-info">Show Leaderboard</a>
@@ -195,7 +195,7 @@
         <!-- Boat List Section -->
         <div class="section-title">Boat List</div>
         <div class="scrollbar">
-            {% for boat in boat_list %}
+            {% for boat in boat_list|reverse %}
             {% for user in users %}
             {% if user.id == boat.user_id %}
             {% for boat_type in boat_types %}

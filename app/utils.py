@@ -18,7 +18,6 @@ def user_auth():
 
 def login_check(username, password):
 
-
     # Checks that both username and psasword field are filled in
     if not username or not password:
         flash("Username and Password are required!")
@@ -33,6 +32,7 @@ def login_check(username, password):
             return redirect(url_for("index"))
         else:
             flash("Incorrect password!")
+            return redirect(url_for("login"))
     else:
         flash("Incorrect username!")
 
@@ -65,7 +65,7 @@ def register_user(username, password):
     db.session.commit()
 
     # After the user is created its redirected to the login page
-    flash("Registration is successful! Please login.")
+    flash("Registration is successful! Please login.", "success")
     return redirect(url_for("login"))
 
 
@@ -80,7 +80,6 @@ def save_boat(user_id, sail_nr, name, type_id):
 
 def save_race(race_name, race_date, srs_list, times):
 
-    
     race_date =  datetime.strptime(race_date, "%Y-%m-%d").date()
     race = Race(name=race_name, date=race_date)
     db.session.add(race)
@@ -94,14 +93,21 @@ def save_race(race_name, race_date, srs_list, times):
                 race_minutes = int(race_time[2]) if race_time[2] else 0
                 race_seconds = int(race_time[3]) if race_time[3] else 0
                 
-                total_time_seconds = race_hours * 3600 + race_minutes * 60 + race_seconds
-                srs_time_seconds = int(total_time_seconds) * float(srs[1])
-                srs_hours = int(srs_time_seconds // 3600)
-                srs_minutes = int((srs_time_seconds % 3600) // 60)
-                srs_seconds = int(srs_time_seconds % 60)
+                srs_hours, srs_minutes, srs_seconds = calculate_times(race_hours, race_minutes, race_seconds, srs)
+
                 real_time = time(race_hours, race_minutes, race_seconds)
                 srs_time = time(srs_hours, srs_minutes, srs_seconds)
 
                 race_stat = Race_stat(race_id=race.id, boat_id=race_time[0], time=real_time, srs_time=srs_time)
                 db.session.add(race_stat)
                 db.session.commit()
+
+def calculate_times(race_hours, race_minutes, race_seconds, srs):
+    total_time_seconds = race_hours * 3600 + race_minutes * 60 + race_seconds
+    srs_time_seconds = int(total_time_seconds) * float(srs[1])
+    
+    srs_hours = int(srs_time_seconds // 3600)
+    srs_minutes = int((srs_time_seconds % 3600) // 60)
+    srs_seconds = int(srs_time_seconds % 60)
+
+    return (srs_hours, srs_minutes, srs_seconds)
