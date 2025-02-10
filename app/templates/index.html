@@ -155,6 +155,9 @@
             <h2>Welcome, {{ user.username }}!</h2>
             <div class="action-buttons">
                 <a href="{{ url_for("logout") }}" class="btn btn-danger">Logout</a>
+                {% if not user.admin %}
+                <a href="{{ url_for("user_profile", user_id=user.id) }}" class="btn btn-success">Profile</a>
+                {% endif %}
                 {% if user.admin %}
                 <a href="{{ url_for("create_race") }}" class="btn btn-primary">Create Race</a>
                 {% else %}
@@ -186,6 +189,9 @@
             <div class="item">
                 <div><strong>{{ race.name }}:</strong> {{ race.date }}</div>
                 <a href="{{ url_for('leaderboard', race_id=race.id) }}" class="btn btn-info">Show Leaderboard</a>
+                {% if user.admin %}
+                <a href="{{ url_for('delete_race', race_id=race.id) }}" class="btn btn-info">Delete Race</a>
+                {% endif %}
             </div>
             {% else %}
             <div class="item">No races found</div>

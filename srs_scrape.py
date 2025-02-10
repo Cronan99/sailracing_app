@@ -17,16 +17,16 @@ session = sessionmaker(bind=engine)
 session = session()
 
 def get_srs():
-    """Using given URL gets all boats srs-number and creates a list.
-    The list contains structure of 1:boattype, 2:SRS, 3:SRS, 4:SRS, 5:SRS followed by next boat."""
+    # Using given URL gets all boats srs-number and creates a list.
+    # The list contains structure of 1:boattype, 2:SRS, 3:SRS, 4:SRS, 5:SRS followed by next boat.
     boat_list = []
-    #Boattype, SRS, SRS_No, SRS_S/H, SRS_S/H_No
+    # Boattype, SRS, SRS_No, SRS_S/H, SRS_S/H_No
     for boat in boats:
         boat_list.append(boat.text)    
     return boat_list
 
 def create_boat_objects():
-    """ Add all boats/data that has been scraped to the database """
+    # Add all boats/data that has been scraped to the database
 
     boats = get_srs()
 
@@ -41,7 +41,7 @@ def create_boat_objects():
         boat_exist = session.query(Boat_type).filter_by(name=name).first()
 
         if not boat_exist:
-
+        # Only if the boat doesnt exist it gets added to eliminate the occourence of doubles
             create_boat = Boat_type(
                 name=name,
                 srs=srs,

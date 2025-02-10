@@ -70,6 +70,7 @@
     </header>
 
     <div class="leaderboard-container">
+        {% set boats_in_leaderboard = [] %}
         {% set ns = namespace(position=1) %}
         {% for result in result_list %}
             {% for boats in boat_list %}
@@ -80,6 +81,8 @@
                                 {% if result[0] == boat.id %}
                                     {% if boat.user_id == user.id %}
                                         {% if boat.type_id == type.id %}
+
+                                            {% if boat.id not in boats_in_leaderboard %}
                                             <div class="leaderboard-item">
                                                 <label class="position">{{ ns.position }}. {{ boat.name }}</label>
                                                 <label>Type: {{ type.name }}</label>
@@ -87,6 +90,8 @@
                                                 <label>Time (Real): {{ result[2] }}</label>
                                                 <label>Owner: {{ user.username }}</label>
                                             </div>
+                                            {% set boats_in_leaderboard = boats_in_leaderboard + [boat.id] %}
+                                            {% endif %}
                                             {% set ns.position = ns.position + 1 %}
                                         {% endif %}
                                     {% endif %}
