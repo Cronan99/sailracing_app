@@ -1,5 +1,18 @@
 How to setup Sailracing app
 
+<<<<<<<<<<<>>>>>>>>>>>
+!!! MUY IMPORTANTE !!!
+<<<<<<<<<<<>>>>>>>>>>>
+
+In the .env file you need a secret key and a database url
+
+SECRET_KEY="secret_key"
+DATABASE_URL=sqlite:///database.db
+
+<<<<<<<<<<<>>>>>>>>>>>
+!!! MUY IMPORTANTE !!!
+<<<<<<<<<<<>>>>>>>>>>>
+
 python run.py to initialize the app and set up the db.
 
 once initialized register a user to later set as admin and then shut down the server.
