@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .boat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .boat-item:last-child {
+            border-bottom: none;
+        }
+
+        .boat-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .delete-link {
+            text-decoration: none;
+            color: white;
+            background-color: #f44336;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .delete-link:hover {
+            background-color: #d32f2f;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>{{user.username}}'s Profile</h1>
+    </header>
+    
+    <div class="profile-container">
+        <h2>Your Boats</h2>
+        {% for boat in boat_list %}
+            {% if boat.user_id == user.id %}
+                <div class="boat-item">
+                    <span class="boat-name">{{boat.name}}</span>
+                    <a class="delete-link" href="{{url_for('delete_boat', boat_id=boat.id)}}">Delete Boat</a>
+                </div>
+            {% endif %}
+        {% endfor %}
+        
+        <a class="back-link" href="{{url_for('index')}}">Return to Home</a>
+    </div>
+</body>
+</html>

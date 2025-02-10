@@ -8,12 +8,19 @@ to set the users admin privileges, do the following:
 
 type in terminal
 
+<<<<<<<<<<<>>>>>>>>>>>
+!!! MUY IMPORTANTE !!!
+<<<<<<<<<<<>>>>>>>>>>>
+
 flask shell
 user = User.query.filter_by(username="your_admin_username").first()
 user.admin = True
 db.session.commit()
 exit()
 
+<<<<<<<<<<<>>>>>>>>>>>
+!!! MUY IMPORTANTE !!!
+<<<<<<<<<<<>>>>>>>>>>>
 
 Now you can start the app again and use the created admin with its features.
 
@@ -71,3 +78,5 @@ filen medans restrerande ligger i tets mappen i app mappen.
 H. SQL med Python.
 Alla objekt och all data som sparas i appen sparas och hämtas från en SQL-lite database
 som ligger under instance/sailracing.db.
+
+Varje funktion har en egen kort kommentar som beskriver vad den gör och vart den skickar vidare data.
