@@ -152,7 +152,7 @@
         <!-- Login/Logout and Action Links -->
         <div class="welcome-message">
             {% if user.username %}
-            <h2>Welcome, {{ user.username }}!</h2>
+            <h2>Welcome, {{ user.username.capitalize() }}!</h2>
             <div class="action-buttons">
                 <a href="{{ url_for("logout") }}" class="btn btn-danger">Logout</a>
                 {% if not user.admin %}
@@ -209,7 +209,7 @@
             <div class="item">
                 <div><strong>Model:</strong> {{ boat_type.name }}</div>
                 <div><strong>Boat:</strong> {{ boat.name }}</div>
-                <div><strong>Captain:</strong> {{ user.username }}</div>
+                <div><strong>Captain:</strong> {{ user.username.capitalize() }}</div>
             </div>
             {% endif %}
             {% endfor %}
